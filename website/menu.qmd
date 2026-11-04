@@ -1,0 +1,26 @@
+---
+title: "Menu"
+---
+
+![](images/grill-icon.svg){fig-alt="Grill icon" width="120" fig-align="center"}
+
+## Off the grill
+
+| Dish                         | Notes                     |
+|------------------------------|---------------------------|
+| Classic smash burgers        | Cheddar or pepper jack    |
+| Black bean burgers           | Vegan                     |
+| Veggie & halloumi skewers    | Vegetarian                |
+| Corn on the cob              | Chili-lime butter         |
+
+## Sides & sweets
+
+- Watermelon feta salad
+- Grandma's potato salad
+- S'mores by the firepit
+
+## What to bring
+
+Just yourself! If you'd like to contribute, a drink to share or a lawn chair is
+always welcome. If you're planning a dish, contact Rob so we don't end up
+with five potato salads.

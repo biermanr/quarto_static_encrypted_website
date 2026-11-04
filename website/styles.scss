@@ -1,0 +1,19 @@
+/*-- scss:defaults --*/
+$primary: #e8590c;
+$navbar-bg: #c2410c;
+$link-color: #c2410c;
+$body-bg: #fffaf3;
+
+/*-- scss:rules --*/
+.hero img {
+  width: 100%;
+  border-radius: 12px;
+}
+
+.callout-bbq {
+  background: #fff1e6;
+  border-left: 6px solid $primary;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+}

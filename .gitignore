@@ -1,0 +1,4 @@
+/website/.quarto/
+/website/unencrypted_site/
+/encrypted_site/
+.DS_Store

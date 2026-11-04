@@ -1,0 +1,22 @@
+project:
+  type: website
+  output-dir: unencrypted_site
+
+website:
+  title: "Summer BBQ 🔥"
+  search: false
+  navbar:
+    left:
+      - href: index.qmd
+        text: The Invite
+      - href: menu.qmd
+        text: Menu
+      - href: details.qmd
+        text: Getting There
+  page-footer:
+    center: "Questions or RSVP? Contact Rob."
+
+format:
+  html:
+    theme: [flatly, styles.scss]
+    embed-resources: true # IMPORTANT! This inlines the CSS, JS, and images into the HTML so encrypt them

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffb347"/>
+      <stop offset="0.6" stop-color="#ff7043"/>
+      <stop offset="1" stop-color="#d84315"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="360" fill="url(#sky)"/>
+  <circle cx="900" cy="250" r="110" fill="#ffe082" opacity="0.9"/>
+  <path d="M0 290 Q300 250 600 285 T1200 280 V360 H0Z" fill="#5d4037"/>
+  <!-- grill -->
+  <g transform="translate(330 150)">
+    <path d="M0 40 A110 70 0 0 0 220 40 Z" fill="#212121"/>
+    <rect x="-10" y="32" width="240" height="10" rx="5" fill="#424242"/>
+    <line x1="40" y1="105" x2="20" y2="190" stroke="#212121" stroke-width="10" stroke-linecap="round"/>
+    <line x1="180" y1="105" x2="200" y2="190" stroke="#212121" stroke-width="10" stroke-linecap="round"/>
+    <path d="M60 25 q-15 -30 5 -55 q-5 25 15 40 q5 -20 -5 -35 q30 20 15 50Z" fill="#ffca28"/>
+    <path d="M140 25 q-15 -30 5 -55 q-5 25 15 40 q5 -20 -5 -35 q30 20 15 50Z" fill="#ff8f00"/>
+  </g>
+  <text x="60" y="95" font-family="Georgia, serif" font-size="64" font-weight="bold" fill="#fff8e1">Summer BBQ</text>
+  <text x="62" y="140" font-family="Georgia, serif" font-size="30" fill="#fff8e1">July 17, 2027</text>
+</svg>

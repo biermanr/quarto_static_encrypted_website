@@ -1,0 +1,27 @@
+---
+title: "You're invited to a Summer BBQ!"
+---
+
+::: {.hero}
+![](images/banner.svg){fig-alt="Sun setting over a grill"}
+:::
+
+Grab your sunglasses. It's time for burgers, lawn games and long evenings.
+
+::: {.callout-bbq}
+**When:** Saturday, July 17, 2027 · 4pm until the fireflies come out
+
+**Where:** Rob's backyard, 123 Example Lane (see [Getting There](details.qmd))
+
+**RSVP:** Contact Rob. Let him know how many are coming and any dietary needs.
+:::
+
+## What to expect
+
+- Burgers, veggie skewers and corn on the cob off the grill
+- Cornhole and a croquet tournament (bragging rights only)
+- A firepit and s'mores after sunset
+
+Hungry already? See the [menu](menu.qmd).
+
+![](images/croquet.png){fig-alt="Croquet balls, a hoop and a mallet on a summer lawn" width="80%" fig-align="center"}
