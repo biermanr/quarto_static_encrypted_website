@@ -1,31 +1,109 @@
-# static_encrypted_website
+# "Private" static website through github pages
 
-An example of a password-protected static website: a summer BBQ invitation
-written in [Quarto](https://quarto.org), encrypted with
+Let's say you are planning a party with 20 guests and need a way to communicate
+details to them.  You could just create an email and send it out to everyone,
+even use BCC to avoid reply-all avalanches!  But then whenever party details
+change you'll need to send out another email.
+
+Instead you could create a website for the event. That way you send a single
+email with the URL and say "please check the website for updates".  Maybe you
+already have a github account and are comfortable using github pages which is
+free. That way you don't need a dedicated server, it's just a static website!
+
+But you don't want this website to be completely public. Who knows what miscreants would
+show up to the event! You also don't want the hassle of giving each guest their
+own password. Instead you just want to share a single password for everyone like "BBQ".
+
+So you definitely need a private github repo to hide your index.html, and maybe
+you have a GitHub Pro account so that's not a problem. Unfortunately getting
+a password-protected static website isn't trivial.
+
+If you have a GitHub Enterprise account then you CAN have a private static
+github pages which is gated through a GitHub login. But you're probably not
+using GitHub Enterprise for this party planning, and not all of your
+guests will have GitHub accounts anyway.
+
+Fortunately, other people have thought of this problem and created tools like 
+[StatiCrypt](https://github.com/robinmoisson/staticrypt) which makes it possible
+to have a private static website anywhere, including github. The way it 
+works is that the `index.html` IS public, but it's **encrypted**. So anyone can
+visit and download your website, but without the shared-password it won't mean
+anything to them.
+
+The goal of this public repo is to show how to create a password-protected
+static website written in [Quarto](https://quarto.org), encrypted with
 [StatiCrypt](https://github.com/robinmoisson/staticrypt), and published to
-GitHub Pages from a private repo by GitHub Actions.
+GitHub Pages.
 
-The demo password is **`BBQ`**. Because it's only an example, the password is
-set in plain sight in [`scripts/build.sh`](scripts/build.sh). See the
-[FAQ](#faq) for how to keep a real password secret.
+As long as you have the ability to make a private github repo then you
+should be able to make your own private static website.
 
-## Layout
+Go ahead and visit the website and use password "BBQ" to login:
+https://biermanr.github.io/static_encrypted_website/
 
+## Tools we'll be using
+
+* Step 1: **[Quarto](https://quarto.org)**
+  * Allows you to write markdown files and *render* them into HTML
+  * Not required, you could make your index.html however you want!
+
+* Step 2: **[StatiCrypt](https://github.com/robinmoisson/staticrypt)**
+  * Encrypts your HTML files
+
+* Github Actions CI
+  * Runs the Quarto then StatiCrypt steps and publishes the github pages website
+  * We'll set this up to run on each push to the main branch
+
+
+## Workflow explanation
+
+Inside of the `website/` folder of this repo you'll see files like `index.qmd`
+and `menu.qmd` etc. These are the files we'll actually be editing as we make
+the website.
+
+Then when we're happy we can run `quarto preview website/` (you'll need to install quarto)
+which should open a web browser to show you what the website will look like.
+Besides opening your browser, the `quarto preview` command has also created
+a new folder `website/unencrypted_site` which is where your HTML pages live.
+It's not encrypted yet, we've only done the first step.
+
+Then we need to run StatiCrypt (requires npx) to encrypt the HTML files produced by Quarto:
+
+```bash
+npx --yes staticrypt@3.5.4 website/unencrypted_site/*.html \
+  --directory website/encrypted_site \
+  --password BBQ \
+  --short \
+  --config false
 ```
-website/                     # the Quarto project: edit the site here
-  _quarto.yml                #   site config (see FAQ for embed-resources, search)
-  index.qmd, menu.qmd, ...   #   pages
-  styles.scss, images/       #   theme and images (inlined at render time)
-scripts/
-  build.sh                   # render + encrypt (CI and local)
-  preview.sh                 # build.sh, then serve on localhost
-.github/workflows/publish.yml
+
+Notice that we're setting the encryption password here!
+
+Otherwise this command is taking as input the HTML files from the unencrypted folder
+and outputting them to a new encrypted folder.
+
+If you have python installed you can preview the encrypted website with a static server:
+```bash
+python3 -m http.server 8000 --bind 127.0.0.1 --directory website/encrypted_site
 ```
 
-Build output (gitignored): `website/unencrypted_site/` from Quarto and
-`encrypted_site/`, the only folder that gets published.
+You should be forced to login using the password **BBQ**.
 
-## How it works
+## Actual workflow
+
+In the Workflow explanation above, we explicitly listed all the steps and commands,
+but it's going to be the same every time so we have combined them into a single
+script, [`build.sh`](build.sh):
+
+```bash
+sh build.sh             # render + encrypt into website/encrypted_site
+sh build.sh --preview   # render + encrypt + serve it at http://localhost:8000
+```
+
+The GitHub Actions CI runs the same `sh build.sh` on every push to `main`, then
+publishes `website/encrypted_site/` to GitHub Pages.
+
+Here's a graphical representation of the steps:
 
 ```mermaid
 flowchart LR
@@ -36,7 +114,7 @@ flowchart LR
         extra["images/, site_libs/,<br/>search.json"]
     end
 
-    enc["encrypted_site/<br/>*.html<br/>(AES-encrypted, login page)"]
+    enc["website/encrypted_site/<br/>*.html<br/>(AES-encrypted, login page)"]
     pages(["GitHub Pages"])
 
     src -- "quarto render" --> html
@@ -45,23 +123,6 @@ flowchart LR
     extra -. "never published" .-x enc
     enc -- "deploy-pages" --> pages
 ```
-
-1. **`quarto render`** builds the site into `website/unencrypted_site/` with
-   `embed-resources: true`, so every image, stylesheet, script and font is
-   inlined into each page as a base64 `data:` URI.
-2. **`staticrypt`** encrypts only the HTML pages into `encrypted_site/` and puts
-   each one behind StatiCrypt's standard login page. Quarto also writes
-   `images/`, `site_libs/` and `search.json` (a plaintext copy of every page)
-   into `unencrypted_site/`. Those files are never copied to `encrypted_site/`.
-3. **Deploy** `encrypted_site/` with `actions/deploy-pages`. Encrypted output is
-   never committed to the repo.
-
-StatiCrypt is given `*.html` from the top level only, so a page in a
-subfolder would be left out of the site. It wouldn't be published
-unencrypted.
-
-All of this is in [`scripts/build.sh`](scripts/build.sh). CI and local
-preview run the same script.
 
 ## Setup
 
@@ -74,19 +135,6 @@ preview run the same script.
 Publishing Pages from a **private** repo requires GitHub Pro, Team or
 Enterprise. The source stays private, but the published site is public, which
 is why it's encrypted.
-
-## Local preview
-
-You need Quarto, Node.js and Python 3.
-
-```bash
-scripts/preview.sh        # builds, then serves http://localhost:8000
-```
-
-StatiCrypt needs WebCrypto, which only works over `https://` or on
-`localhost`, so opening the HTML file directly won't work.
-
-For editing without encryption, run `quarto preview website`.
 
 ## Caveats
 
@@ -135,7 +183,7 @@ For editing without encryption, run `quarto preview website`.
   repo, stays in the git history forever, and is exposed if the repo is ever
   made public. For a real site, use a GitHub secret instead:
 
-  1. Remove `--password BBQ` from `scripts/build.sh`. StatiCrypt then reads
+  1. Remove `--password BBQ` from `build.sh`. StatiCrypt then reads
      the password from the `STATICRYPT_PASSWORD` environment variable.
   2. Add a repository secret: *Settings → Secrets and variables → Actions →
      New repository secret*, named `STATICRYPT_PASSWORD`.
@@ -145,5 +193,32 @@ For editing without encryption, run `quarto preview website`.
      - name: Build and encrypt
        env:
          STATICRYPT_PASSWORD: ${{ secrets.STATICRYPT_PASSWORD }}
-       run: scripts/build.sh
+       run: sh build.sh
      ```
+
+## Repository layout
+
+```
+├── .github
+│   └── workflows
+│       └── publish.yml        # CI: sh build.sh, then deploy to GitHub Pages
+├── website                    # the Quarto project: edit the site here
+│   ├── images                 # inlined into the pages at render time
+│   │   ├── banner.svg
+│   │   ├── croquet.png
+│   │   └── grill-icon.svg
+│   ├── encrypted_site         # build output, gitignored: the only folder published
+│   ├── unencrypted_site       # build output, gitignored: never published
+│   ├── _quarto.yml            # site config (see FAQ for embed-resources, search)
+│   ├── details.qmd            # event detail page
+│   ├── index.qmd              # event home page
+│   ├── menu.qmd               # event menu page
+│   └── styles.scss            # theme
+├── build.sh                   # render + encrypt; --preview also serves on localhost:8000
+└── README.md
+```
+
+## Contributing
+
+Issues and pull requests are welcome, whether it's a bug fix, a clearer
+explanation, or a question about how something works.

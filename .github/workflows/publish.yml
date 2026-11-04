@@ -26,10 +26,9 @@ jobs:
         with:
           version: 1.10.18
 
-      # Renders with Quarto, inlines all assets, deletes plaintext leftovers,
-      # encrypts every page with StatiCrypt and verifies the result.
+      # Builds with quarto then encrypts every page with StatiCrypt
       - name: Build and encrypt
-        run: scripts/build.sh
+        run: sh build.sh
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v6
@@ -37,7 +36,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: encrypted_site
+          path: website/encrypted_site
 
   deploy:
     needs: build
