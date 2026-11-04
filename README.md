@@ -196,28 +196,6 @@ is why it's encrypted.
        run: sh build.sh
      ```
 
-## Repository layout
-
-```
-├── .github
-│   └── workflows
-│       └── publish.yml        # CI: sh build.sh, then deploy to GitHub Pages
-├── website                    # the Quarto project: edit the site here
-│   ├── images                 # inlined into the pages at render time
-│   │   ├── banner.svg
-│   │   ├── croquet.png
-│   │   └── grill-icon.svg
-│   ├── encrypted_site         # build output, gitignored: the only folder published
-│   ├── unencrypted_site       # build output, gitignored: never published
-│   ├── _quarto.yml            # site config (see FAQ for embed-resources, search)
-│   ├── details.qmd            # event detail page
-│   ├── index.qmd              # event home page
-│   ├── menu.qmd               # event menu page
-│   └── styles.scss            # theme
-├── build.sh                   # render + encrypt; --preview also serves on localhost:8000
-└── README.md
-```
-
 ## Contributing
 
 Issues and pull requests are welcome, whether it's a bug fix, a clearer
