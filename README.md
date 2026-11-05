@@ -1,4 +1,4 @@
-# Encrypted static website through GitHub Pages
+# Encrypted quarto static website through GitHub Pages
 
 Have you ever wanted to make a website which has simple password protection
 but you don't want to set up a server, user accounts, and a database?
