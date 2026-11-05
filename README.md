@@ -10,12 +10,10 @@ works is that the HTML pages ARE public, but they're **encrypted**. So anyone ca
 visit or download your website, but without the shared-password it won't mean
 anything to them.
 
-The goal of this repo is to show how to create a password-protected
-static website written in [Quarto](https://quarto.org), encrypted with
+The goal of this repo is to show how to create a password-protected static
+website written in [Quarto](https://quarto.org), encrypted with
 [StatiCrypt](https://github.com/robinmoisson/staticrypt), and published to
-GitHub Pages.
-
-If you don't need Quarto,
+GitHub Pages.  If you don't need Quarto,
 [a-nau/password-protected-website-template](https://github.com/a-nau/password-protected-website-template)
 is a nice template with a lot of overlap with this one.
 
