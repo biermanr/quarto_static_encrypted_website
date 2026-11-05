@@ -15,6 +15,10 @@ static website written in [Quarto](https://quarto.org), encrypted with
 [StatiCrypt](https://github.com/robinmoisson/staticrypt), and published to
 GitHub Pages.
 
+If you don't need Quarto,
+[a-nau/password-protected-website-template](https://github.com/a-nau/password-protected-website-template)
+is a nice template with a lot of overlap with this one.
+
 Try it out! Visit the website and use password "BBQ" to log in:
 https://biermanr.github.io/static_encrypted_website/
 
@@ -27,11 +31,11 @@ https://biermanr.github.io/static_encrypted_website/
 2. **Enable Pages.** Go to *Settings → Pages → Build and deployment →
    Source* and choose **GitHub Actions**.
 
-3. **Make it yours.** Edit the pages in `website/*.qmd`, and change
-   `--password BBQ` in `build.sh`. You can do this directly in the browser.
+3. **Make it yours.** Change `--password BBQ` in [`build.sh`](build.sh). You
+   can do this directly in the browser.
 
 4. Commit and push to `main`. The site is published by default to
-   `https://<user>.github.io/<repo>/`.
+   `https://<user>.github.io/<repo-name>/` 
 
 ## Tools we'll be using
 
@@ -76,6 +80,57 @@ and outputting them to a new encrypted folder.
 
 Open `website/encrypted_site/index.html` in your web browser. You should be
 forced to log in using the password **BBQ**.
+
+<details>
+<summary><b>What does StatiCrypt actually do to a page?</b></summary>
+
+The real BBQ pages are about 1.6 MB each because of the inlined images and
+CSS, so here's a tiny page instead, encrypted with the same command and
+password.
+
+**Before:** `unencrypted_site/index.html` (174 bytes)
+
+```html
+<!DOCTYPE html>
+<html>
+  <head><title>Summer BBQ</title></head>
+  <body>
+    <h1>You're invited!</h1>
+    <p>Saturday, July 17 at 4pm, 123 Example Lane</p>
+  </body>
+</html>
+```
+
+**After:** `encrypted_site/index.html` is mostly staticrypt portions:
+
+```html
+<!DOCTYPE html>
+<html class="staticrypt-html">
+    <head>
+        <title>Protected Page</title>
+        <!-- ... staticrypt styles for the login page ... -->
+    </head>
+    <body class="staticrypt-body">
+        <!-- ... staticrypt password box ... -->
+        <script>
+            // ... HERE'S WHERE THE ORIGINAL HTML GOT ENCRYPTED
+            staticryptConfig = {
+                "staticryptEncryptedMsgUniqueVariableName": "12234bf5e4d8...9c916583",
+                // ...
+            };
+            // ... code that shows the login form or decrypts the page ...
+        </script>
+    </body>
+</html>
+```
+
+Your whole original page is inside that `staticryptConfg` block,
+even if you had embedded images. This encrypted string is all
+someone would be able to see if they downloaded your page without the password.
+
+Typing the password turns all of this back into the 174-byte page above, exactly!
+
+</details>
 
 ## Actual workflow
 
@@ -272,6 +327,6 @@ STATICRYPT_PASSWORD='your long passphrase' sh build.sh
 Issues and pull requests are welcome, whether it's a bug fix, a clearer
 explanation, or a question about how something works.
 
-## ::robot:: AI usage disclaimer ::robot::
+## 🤖 AI usage disclaimer 🤖
 
 This repo was built with help from [Claude Code](https://claude.com/claude-code). I reviewed, tested and edited everything. I am responsible for the final product, good or bad.
