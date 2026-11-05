@@ -1,3 +1,5 @@
+**NOTE: Do not trust this approach with critical data such as banking or medical data etc. It's meant for low-security needs.**
+
 # Encrypted quarto static website through GitHub Pages
 
 Have you ever wanted to make a website which has simple password protection
