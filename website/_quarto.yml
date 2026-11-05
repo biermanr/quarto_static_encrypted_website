@@ -4,6 +4,7 @@ project:
 
 website:
   title: "Summer BBQ 🔥"
+  favicon: images/favicon.png
   search: false
   navbar:
     left:
@@ -13,6 +14,10 @@ website:
         text: Menu
       - href: details.qmd
         text: Getting There
+    right:
+      - href: "index.html?staticrypt_logout"
+        text: Logout
+        icon: box-arrow-right
   page-footer:
     center: "Questions or RSVP? Contact Rob."
 

@@ -1,7 +1,7 @@
 #!/bin/sh
-# Usage:
-#   sh build.sh             # render + encrypt into website/encrypted_site
-#   sh build.sh --preview   # ...then serve it at http://localhost:8000
+# Usage: sh build.sh
+# Renders + encrypts into website/encrypted_site. Open
+# website/encrypted_site/index.html in a browser to check the result.
 set -eu
 
 # 1. Quarto render the website/*.qmd files into website/unencrypted_site/*.html files
@@ -18,8 +18,3 @@ npx --yes staticrypt@3.5.4 website/unencrypted_site/*.html \
   --password BBQ \
   --short \
   --config false
-
-# 3. Optionally serve the encrypted site locally (WebCrypto needs localhost or https)
-if [ "${1:-}" = "--preview" ]; then
-  python3 -m http.server 8000 --bind 127.0.0.1 --directory website/encrypted_site
-fi
