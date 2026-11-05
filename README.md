@@ -84,10 +84,6 @@ forced to log in using the password **BBQ**.
 <details>
 <summary><b>What does StatiCrypt actually do to a page?</b></summary>
 
-The real BBQ pages are about 1.6 MB each because of the inlined images and
-CSS, so here's a tiny page instead, encrypted with the same command and
-password.
-
 **Before:** `unencrypted_site/index.html` (174 bytes)
 
 ```html
