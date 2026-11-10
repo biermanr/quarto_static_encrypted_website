@@ -20,7 +20,7 @@ GitHub Pages.  If you don't need Quarto,
 is a nice template with a lot of overlap with this one.
 
 Try it out! Visit the website and use password "BBQ" to log in:
-https://biermanr.github.io/static_encrypted_website/
+https://biermanr.github.io/quarto_static_encrypted_website/
 
 ## Setup your own
 
